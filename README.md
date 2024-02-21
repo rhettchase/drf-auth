@@ -1,10 +1,10 @@
-# LAB - Class 32
+# LAB - Class 33
 
 ## Project: Authentication & Production Server
 
 ### Project Description
 
-Fully functional CRUD API app that allows users to view the collection of brews (GET), as well as Create, Update, and Delete brews from the collection. Users are required to be authenticated to access the API. The app utilizes a postgres database and is run in Docker container.
+Fully functional CRUD API app that allows users to view the collection of brews (GET), as well as Create, Update, and Delete brews from the collection. Users are required to be authenticated to access the API. The app utilizes a Postgres database and is run in Docker container.
 
 ### Author: Rhett Chase
 
@@ -38,6 +38,7 @@ Fully functional CRUD API app that allows users to view the collection of brews 
 - Open the page in the localhost specified in the terminal to view GET request and add `/api/v1/brews` to end of url
 - Create superuser: `docker compose exec web python manage.py createsuperuser`
   - From admin panel you can also create new users (make them a Staff account to have access to admin panel)
+- Add to brew collection by using a `POST` request
 
 #### How to use your library (where applicable)
 
