@@ -127,10 +127,12 @@ Note: Basic authentication is available for the CRUD routes (username and passwo
 ##### PUT Requests (Update)
 
 - [`http://0.0.0.0:8000/api/v1/brews/{id}/`](http://0.0.0.0:8000/api/v1/brews/2/)
-- edit JSON body (see example above)
+- edit `JSON` body (see example above)
 - Permissions required: only the user that created the specific brew may update it
+- In `Auth` tab > `Basic`, include username and password
 
 ##### DELETE Requests
 
 - [`http://0.0.0.0:8000/api/v1/brews/{id}/`](http://0.0.0.0:8000/api/v1/brews/2/)
 - Permissions required: only the user that created the specific brew may update it
+- In `Auth` tab > `Basic`, include username and password
