@@ -4,7 +4,7 @@
 
 ### Project Description
 
-Fully functional CRUD API app that allows users to view the collection of brews (GET), as well as Create, Update, and Delete brews from the collection. Users are required to be authenticated to access the API. The app utilizes a Postgres database and is run in Docker container.
+Fully functional CRUD API app that allows users to view the collection of brews (GET), as well as Create, Update, and Delete brews from the collection. Users are required to be authenticated (via Basic authentication or JWT) to access the API. The app utilizes a Postgres database and is run in Docker container. The app includes JWT authentication to the API and a Gunicorn server. Whitenoise is used to handle static files.
 
 ### Author: Rhett Chase
 
@@ -15,6 +15,8 @@ Fully functional CRUD API app that allows users to view the collection of brews 
 - chatGPT
 - [Django, Docker, and PostgreSQL Tutorial](https://learndjango.com/tutorials/django-docker-and-postgresql-tutorial)
 - [Django REST Framework - Simple JWT](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html)
+- [Gunicorn](https://gunicorn.org/)
+- [Whitenoise](https://whitenoise.readthedocs.io/en/stable/django.html)
 
 ### Setup
 
