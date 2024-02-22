@@ -37,17 +37,71 @@ Fully functional CRUD API app that allows users to view the collection of brews 
 - See the page in browser by running `docker-compose up --build`
 - Open the page in the localhost specified in the terminal to view GET request and add `/api/v1/brews` to end of url
 - Create superuser: `docker compose exec web python manage.py createsuperuser`
-  - From admin panel you can also create new users (make them a Staff account to have access to admin panel)
+  - From admin panel [`http://0.0.0.0:8000/admin/`](http://0.0.0.0:8000/admin/) you can also create new users (make them a Staff account to have access to admin panel)
 - Add to brew collection by using a `POST` request
 
 #### How to use your library (where applicable)
 
-Once server is running, use Thunder Client or other application of your choice to complete GET, PUT, POST, DELETE Requests. GET requests also can be completed in the browser.
+Once server is running, use Thunder Client or other application of your choice to complete GET, PUT, POST, DELETE Requests. GET requests also can be completed in the browser. *Must be authenticated to access the API*
 
-*Must be logged in to access the API*
+#### Tests (Thunder Client)
 
-- Login with superuser or staff user credentails at [`http://0.0.0.0:8000/admin/`](http://0.0.0.0:8000/admin/)
-- Or authenticate in the `Auth` panel using Thunder Client or other comparable app
+1. Get Access and Refresh Tokens
+
+- complete `POST` request `0.0.0.0:8000/api/token/` to get access and refresh tokens
+- input the username and password of the superuser you created in the `JSON` tab
+
+```json
+{
+	"username": "admin",
+	"password": "admin"
+}
+```
+
+Response will include a "refresh" and an "access" token
+
+```json
+{
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwODY0MjU2MywiaWF0IjoxNzA4NTU2MTYzLCJqdGkiOiIzZGMyZDU0MWYyMGU0NTNmYmRhZmI4YWI1MzI1YjgwZSIsInVzZXJfaWQiOjF9.NNw_KuyaM5IHJtfJuKChZnj5p0HJz0OP58aVBGAHqpY",
+  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA4NTU2NDYzLCJpYXQiOjE3MDg1NTYxNjMsImp0aSI6IjdhODA0ZDdhZThmZjRmNzA5MDk1NzY5Y2U1ZGQ0MTYxIiwidXNlcl9pZCI6MX0.Vw6vo8rKDJFlGIa7hWYaxz06L06j1GtL0_EFNzo0r4s"
+}
+```
+
+2. GET request with token authorization
+
+- Copy the "access" token
+- Create new `GET` request `http://0.0.0.0:8000/api/v1/brews/`
+- Copy the "access" token into the `Auth` tab > `Bearer` tab in body called `Bearer Token`
+- Send Request
+- Response will be the list of all brews that have been added to the database
+
+When this short-lived `access token` expires, you can use the longer-lived refresh token to obtain another access token:
+
+3. Refresh access token
+
+- Copy the "refresh" token
+- Create new `POST` request
+- In the JSON tab, copy the refresh code using the below format
+- Send Request
+
+```json
+{
+  "refresh": 
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcwODY0Mjk5NSwiaWF0IjoxNzA4NTU2NTk1LCJqdGkiOiJmZWI0MTNjMjFiODY0OTRjOTZlN2Q0ZDY4NmRmNTVjYiIsInVzZXJfaWQiOjF9.0PtwU1iJNmQbtMPdpDNNHiaNGPPEWJXaOZR1KcmtWbE"
+}
+```
+
+Response will be a new access token, which you can use for new `GET` request
+
+```json
+{
+  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA4NTYxODYyLCJpYXQiOjE3MDg1NTY1OTUsImp0aSI6IjU5NTI5ZThmZDc1NDRjMjJhOWM1NWFiZDBhZWYxZjFjIiwidXNlcl9pZCI6MX0.kikXTgUyInqIJQCgFz1BIYBleSVOCebvkhLLs2Ahl3M"
+}
+```
+
+#### CRUD Routes
+
+Note: Basic authentication is available for the CRUD routes (username and password)
 
 ##### GET Requests (Read)
 
@@ -55,7 +109,8 @@ Once server is running, use Thunder Client or other application of your choice t
 
 ##### POST Requests (Add)
 
-- User Thunder Client to add `body` > `JSON`, OR go to bottom of page [`http://0.0.0.0:8000/api/v1/brews/`](http://0.0.0.0:8000/api/v1/brews/)
+- User Thunder Client to add `body` > `JSON` using below json format, OR go to bottom of page [`http://0.0.0.0:8000/api/v1/brews/`](http://0.0.0.0:8000/api/v1/brews/)
+- In `Auth` tab > `Basic`, include username and password
 
 ```json
 {
@@ -77,7 +132,3 @@ Once server is running, use Thunder Client or other application of your choice t
 
 - [`http://0.0.0.0:8000/api/v1/brews/{id}/`](http://0.0.0.0:8000/api/v1/brews/2/)
 - Permissions required: only the user that created the specific brew may update it
-
-#### Tests
-
-- `docker compose run web python manage.py test`
